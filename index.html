@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#1a3a2f" />
+  <title>Invoice builder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:opsz,wght@9..144,600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="app">
+    <header class="hero">
+      <p class="hero-sub">Fill in details, add line items, then download PDF.</p>
+    </header>
+
+    <form id="invoice-form" class="card">
+      <div class="form-top-grid">
+        <fieldset class="section section-shop">
+          <legend>Shop</legend>
+          <div class="doc-header">
+            <p class="doc-header-cap">INVOICE</p>
+          </div>
+          <label class="field field-shop-center">
+            <span class="label">Shop name</span>
+            <input type="text" name="shopName" id="shopName" placeholder="Your business name" autocomplete="organization" required />
+          </label>
+          <label class="field field-shop-center">
+            <span class="label">Address</span>
+            <textarea name="shopAddress" id="shopAddress" rows="3" placeholder="Street, city, postal code" required></textarea>
+          </label>
+        </fieldset>
+
+        <fieldset class="section section-invoice-meta">
+          <legend>Invoice details</legend>
+          <div class="invoice-meta-row">
+            <div class="invoice-meta-name">
+              <label class="field">
+                <span class="label">Name</span>
+                <input type="text" name="customerName" id="customerName" placeholder="e.g. Isha institute of inner sciences" autocomplete="organization" required />
+              </label>
+            </div>
+            <div class="invoice-meta-ref">
+              <label class="field">
+                <span class="label">Invoice</span>
+                <input type="text" name="invoiceNumber" id="invoiceNumber" placeholder="1100" required />
+              </label>
+              <label class="field">
+                <span class="label">Date</span>
+                <input type="date" name="invoiceDate" id="invoiceDate" required />
+              </label>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+
+      <fieldset class="section section-items">
+        <legend>Line items</legend>
+        <p class="unit-key">
+          <strong>Dozen</strong> (full form: twelve items) is billed as code <strong>DOZ</strong>.
+          <strong>Bunch</strong> (full form: one tied bundle, e.g. flowers) is billed as code <strong>BCH</strong>.
+        </p>
+        <div id="items-container" class="items"></div>
+        <button type="button" id="add-item" class="btn btn-secondary btn-full">+ Add item</button>
+      </fieldset>
+
+      <fieldset class="section">
+        <legend>Totals</legend>
+        <div class="totals">
+          <div class="totals-row totals-grand">
+            <span>Total</span>
+            <strong id="total-display">0.00</strong>
+          </div>
+          <p class="total-words" id="total-words-display"></p>
+        </div>
+      </fieldset>
+
+      <div class="actions">
+        <button type="button" id="reset-draft-btn" class="btn btn-secondary">Clear saved</button>
+        <button type="button" id="preview-btn" class="btn btn-secondary">Preview</button>
+        <button type="submit" class="btn btn-primary">Download PDF</button>
+      </div>
+    </form>
+
+    <dialog id="preview-dialog" class="preview-dialog">
+      <div class="preview-inner">
+        <button type="button" id="preview-close" class="preview-close" aria-label="Close">&times;</button>
+        <div id="preview-content" class="preview-sheet"></div>
+      </div>
+    </dialog>
+  </div>
+
+  <template id="item-row-template">
+    <div class="item-row" data-item>
+      <div class="item-fields">
+        <label class="field">
+          <span class="label">Product / service</span>
+          <input type="text" class="item-desc" placeholder="Description" required />
+        </label>
+        <div class="grid-item-cols">
+          <label class="field">
+            <span class="label">Qty</span>
+            <input type="number" class="item-qty" min="0" step="any" value="1" required />
+          </label>
+          <label class="field">
+            <span class="label">Unit</span>
+            <select class="item-unit" required>
+              <option value="NOS">NOS (Numbers)</option>
+              <option value="GMS">GMS (Gram)</option>
+              <option value="KGS">KGS (Kilograms)</option>
+              <option value="QTL">QTL (Quintal)</option>
+              <option value="TON">TON (Ton)</option>
+              <option value="DOZ">Dozen (DOZ)</option>
+              <option value="BCH">Bunch (BCH)</option>
+              <option value="LTR">LTR (Liters)</option>
+              <option value="MTR">MTR (Meters)</option>
+              <option value="SQM">SQM (Square meters)</option>
+              <option value="HRS">HRS (Hours)</option>
+              <option value="DAYS">DAYS (Days)</option>
+              <option value="MTH">MTH (Months)</option>
+              <option value="JOB">JOB (one complete task)</option>
+              <option value="LOT">LOT (grouped items/services)</option>
+              <option value="PKG">PKG (bundled offering)</option>
+            </select>
+          </label>
+          <label class="field">
+            <span class="label">Unit price</span>
+            <input type="number" class="item-price" min="0" step="0.01" value="0" required />
+          </label>
+          <label class="field">
+            <span class="label">Line total</span>
+            <input type="text" class="item-line-total" readonly tabindex="-1" />
+          </label>
+        </div>
+      </div>
+      <button type="button" class="btn btn-ghost btn-remove" data-remove aria-label="Remove item">Remove</button>
+    </div>
+  </template>
+
+  <script type="module" src="/main.js"></script>
+</body>
+</html>
