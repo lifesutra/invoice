@@ -1,19 +1,137 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#1a3a2f" />
-  <title>Invoice builder</title>
+  <meta name="theme-color" content="#0f1f19" />
+  <title>Invoice Builder</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:opsz,wght@9..144,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+  <script type="importmap">
+  {
+    "imports": {
+      "jspdf": "https://esm.sh/jspdf@2.5.2",
+      "jspdf-autotable": "https://esm.sh/jspdf-autotable@3.8.4"
+    }
+  }
+  </script>
 </head>
 <body>
   <div class="app">
-    <header class="hero">
-      <p class="hero-sub">Fill in details, add line items, then download PDF.</p>
+    <header class="topbar">
+      <div class="topbar-brand">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <rect width="28" height="28" rx="8" fill="var(--accent)"/>
+          <rect x="7" y="7" width="14" height="2" rx="1" fill="#062017"/>
+          <rect x="7" y="11" width="10" height="2" rx="1" fill="#062017"/>
+          <rect x="7" y="15" width="14" height="2" rx="1" fill="#062017"/>
+          <rect x="7" y="19" width="8" height="2" rx="1" fill="#062017"/>
+        </svg>
+        <span class="topbar-title">Invoice Builder</span>
+      </div>
+      <div class="theme-picker-wrap" id="theme-picker-wrap">
+        <button class="theme-picker-btn" id="theme-picker-btn" aria-label="Choose theme" title="Switch theme">
+          <span class="theme-picker-dot" id="theme-picker-dot"></span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+        </button>
+        <div class="theme-palette" id="theme-palette" hidden>
+          <div class="theme-palette-label">Theme</div>
+          <div class="theme-swatches">
+            <button class="tswatch" data-t="dark"   title="Forest"><i style="background:#5ce1a8"></i><span>Forest</span></button>
+            <button class="tswatch" data-t="light"  title="Light"><i style="background:#1f9e68;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)"></i><span>Light</span></button>
+            <button class="tswatch" data-t="ocean"  title="Ocean"><i style="background:#38bdf8"></i><span>Ocean</span></button>
+            <button class="tswatch" data-t="slate"  title="Slate"><i style="background:#818cf8"></i><span>Slate</span></button>
+            <button class="tswatch" data-t="ember"  title="Ember"><i style="background:#fb923c"></i><span>Ember</span></button>
+            <button class="tswatch" data-t="rose"   title="Rose"><i style="background:#f472b6"></i><span>Rose</span></button>
+          </div>
+        </div>
+      </div>
     </header>
+
+    <div class="hero">
+      <p class="hero-sub">Fill in details, choose a template, then download your PDF.</p>
+    </div>
+
+    <div class="template-section">
+      <div class="template-label">Invoice template</div>
+      <div class="template-picker" id="template-picker">
+
+        <button class="tpl-card active" data-tpl="classic" aria-label="Classic template">
+          <div class="tpl-thumb tpl-thumb-classic">
+            <div class="tt-header-classic">
+              <div class="tt-title">INVOICE</div>
+              <div class="tt-sub">Shop Name</div>
+            </div>
+            <div class="tt-row"></div><div class="tt-row short"></div>
+            <div class="tt-table"><div class="tt-thead"></div><div class="tt-trow"></div><div class="tt-trow"></div></div>
+          </div>
+          <span class="tpl-name">Classic</span>
+        </button>
+
+        <button class="tpl-card" data-tpl="modern" aria-label="Modern template">
+          <div class="tpl-thumb tpl-thumb-modern">
+            <div class="tt-header-modern">
+              <div class="tt-title-modern">Shop Name</div>
+              <div class="tt-inv-modern">INV #123</div>
+            </div>
+            <div class="tt-row"></div><div class="tt-row short"></div>
+            <div class="tt-table"><div class="tt-thead-modern"></div><div class="tt-trow"></div><div class="tt-trow"></div></div>
+          </div>
+          <span class="tpl-name">Modern</span>
+        </button>
+
+        <button class="tpl-card" data-tpl="minimal" aria-label="Minimal template">
+          <div class="tpl-thumb tpl-thumb-minimal">
+            <div class="tt-header-minimal">
+              <div class="tt-title-minimal">Shop Name</div>
+              <div class="tt-line-minimal"></div>
+            </div>
+            <div class="tt-row"></div><div class="tt-row short"></div>
+            <div class="tt-table"><div class="tt-thead-minimal"></div><div class="tt-trow"></div><div class="tt-trow"></div></div>
+          </div>
+          <span class="tpl-name">Minimal</span>
+        </button>
+
+        <button class="tpl-card" data-tpl="event" aria-label="Event template">
+          <div class="tpl-thumb tpl-thumb-event">
+            <div class="tt-header-event">
+              <div class="tt-title-event">EVENT</div>
+              <div class="tt-sub-event">Organizer</div>
+            </div>
+            <div class="tt-row"></div><div class="tt-row short"></div>
+            <div class="tt-table"><div class="tt-thead-event"></div><div class="tt-trow"></div><div class="tt-trow"></div></div>
+          </div>
+          <span class="tpl-name">Event</span>
+        </button>
+
+        <button class="tpl-card" data-tpl="tech" aria-label="Tech template">
+          <div class="tpl-thumb tpl-thumb-tech">
+            <div class="tt-header-tech">
+              <div class="tt-title-tech">DEV CO.</div>
+              <div class="tt-inv-tech">INV</div>
+            </div>
+            <div class="tt-row"></div><div class="tt-row short"></div>
+            <div class="tt-table"><div class="tt-thead-tech"></div><div class="tt-trow"></div><div class="tt-trow"></div></div>
+          </div>
+          <span class="tpl-name">Tech</span>
+        </button>
+
+        <button class="tpl-card" data-tpl="travel" aria-label="Travel template">
+          <div class="tpl-thumb tpl-thumb-travel">
+            <div class="tt-header-travel">
+              <div class="tt-title-travel">TRAVEL CO.</div>
+              <div class="tt-sub-travel">Advisors</div>
+            </div>
+            <div class="tt-row"></div><div class="tt-row short"></div>
+            <div class="tt-table"><div class="tt-thead-travel"></div><div class="tt-trow"></div><div class="tt-trow"></div></div>
+          </div>
+          <span class="tpl-name">Travel</span>
+        </button>
+
+      </div>
+    </div>
 
     <form id="invoice-form" class="card">
       <div class="form-top-grid">
@@ -34,23 +152,19 @@
 
         <fieldset class="section section-invoice-meta">
           <legend>Invoice details</legend>
-          <div class="invoice-meta-row">
-            <div class="invoice-meta-name">
-              <label class="field">
-                <span class="label">Name</span>
-                <input type="text" name="customerName" id="customerName" placeholder="e.g. Isha institute of inner sciences" autocomplete="organization" required />
-              </label>
-            </div>
-            <div class="invoice-meta-ref">
-              <label class="field">
-                <span class="label">Invoice</span>
-                <input type="text" name="invoiceNumber" id="invoiceNumber" placeholder="1100" required />
-              </label>
-              <label class="field">
-                <span class="label">Date</span>
-                <input type="date" name="invoiceDate" id="invoiceDate" required />
-              </label>
-            </div>
+          <label class="field">
+            <span class="label">Bill to</span>
+            <input type="text" name="customerName" id="customerName" placeholder="Customer / company name" autocomplete="organization" required />
+          </label>
+          <div class="invoice-ref-row">
+            <label class="field">
+              <span class="label">Invoice #</span>
+              <input type="text" name="invoiceNumber" id="invoiceNumber" placeholder="1100" required />
+            </label>
+            <label class="field">
+              <span class="label">Date</span>
+              <input type="date" name="invoiceDate" id="invoiceDate" required />
+            </label>
           </div>
         </fieldset>
       </div>
@@ -58,11 +172,13 @@
       <fieldset class="section section-items">
         <legend>Line items</legend>
         <p class="unit-key">
-          <strong>Dozen</strong> (full form: twelve items) is billed as code <strong>DOZ</strong>.
-          <strong>Bunch</strong> (full form: one tied bundle, e.g. flowers) is billed as code <strong>BCH</strong>.
+          <strong>Dozen</strong> = 12 items (DOZ) &nbsp;·&nbsp; <strong>Bunch</strong> = one tied bundle (BCH)
         </p>
         <div id="items-container" class="items"></div>
-        <button type="button" id="add-item" class="btn btn-secondary btn-full">+ Add item</button>
+        <button type="button" id="add-item" class="btn btn-secondary btn-full btn-add-item">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Add item
+        </button>
       </fieldset>
 
       <fieldset class="section">
@@ -77,15 +193,26 @@
       </fieldset>
 
       <div class="actions">
-        <button type="button" id="reset-draft-btn" class="btn btn-secondary">Clear saved</button>
-        <button type="button" id="preview-btn" class="btn btn-secondary">Preview</button>
-        <button type="submit" class="btn btn-primary">Download PDF</button>
+        <button type="button" id="reset-draft-btn" class="btn btn-ghost-danger">Clear</button>
+        <div class="actions-right">
+          <button type="button" id="preview-btn" class="btn btn-secondary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            Preview
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download PDF
+          </button>
+        </div>
       </div>
     </form>
 
     <dialog id="preview-dialog" class="preview-dialog">
       <div class="preview-inner">
-        <button type="button" id="preview-close" class="preview-close" aria-label="Close">&times;</button>
+        <div class="preview-toolbar">
+          <span class="preview-toolbar-label">Preview</span>
+          <button type="button" id="preview-close" class="preview-close" aria-label="Close">&times;</button>
+        </div>
         <div id="preview-content" class="preview-sheet"></div>
       </div>
     </dialog>
@@ -120,7 +247,7 @@
               <option value="DAYS">DAYS (Days)</option>
               <option value="MTH">MTH (Months)</option>
               <option value="JOB">JOB (one complete task)</option>
-              <option value="LOT">LOT (grouped items/services)</option>
+              <option value="LOT">LOT (grouped items)</option>
               <option value="PKG">PKG (bundled offering)</option>
             </select>
           </label>
@@ -134,10 +261,13 @@
           </label>
         </div>
       </div>
-      <button type="button" class="btn btn-ghost btn-remove" data-remove aria-label="Remove item">Remove</button>
+      <button type="button" class="btn btn-ghost btn-remove" data-remove aria-label="Remove item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        Remove
+      </button>
     </div>
   </template>
 
-  <script type="module" src="/main.js"></script>
+  <script type="module" src="./main.js"></script>
 </body>
 </html>
