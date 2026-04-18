@@ -310,13 +310,18 @@ body {
 }
 
 .template-picker {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 0.65rem;
-  flex-wrap: wrap;
+}
+
+@media (min-width: 768px) {
+  .template-picker {
+    grid-template-columns: repeat(6, 1fr);
+  }
 }
 
 .tpl-card {
-  flex: 1 1 0;
   background: var(--surface);
   border: 2px solid var(--border);
   border-radius: 12px;
