@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>OrangyAds Invoice Builder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <script type="importmap">
+  { "imports": { "jspdf": "https://esm.sh/jspdf@2.5.2", "jspdf-autotable": "https://esm.sh/jspdf-autotable@3.8.4" } }
+  </script>
+  <script type="module" crossorigin src="/invoice/assets/orangyads-CR7pfZIr.js"></script>
+  <link rel="modulepreload" crossorigin href="/invoice/assets/jspdf.plugin.autotable-CO4CE3FN.js">
+  <link rel="stylesheet" crossorigin href="/invoice/assets/jspdf.plugin-xpngJnrz.css">
+  <link rel="stylesheet" crossorigin href="/invoice/assets/orangyads-Cs0QVwTC.css">
+</head>
+<body>
+  <div class="app oa-app">
+
+    <header class="oa-topbar">
+      <a href="./index.html" class="oa-back">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        All Templates
+      </a>
+      <img src="/invoice/assets/orgadsclearlogo-BVCq97ch.png" class="oa-topbar-logo" alt="OrangyAds" />
+    </header>
+
+    <div class="oa-hero">
+      <p>Company details are pre-filled. Fill in the invoice info and download.</p>
+    </div>
+
+    <form id="oa-form" class="oa-form">
+
+      <!-- ── Company Details ── -->
+      <div class="oa-card">
+        <button type="button" class="oa-card-head" id="oa-company-toggle" aria-expanded="false">
+          <span>Company Details</span>
+          <svg class="oa-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="oa-card-body" id="oa-company-body" hidden>
+          <div class="oa-grid-2">
+            <label class="field">
+              <span class="label">Office Address</span>
+              <textarea id="oa-address" rows="3">686, Shop no - 3,
+Shridhar Nilay Apts,
+Bibwewadi - 411037</textarea>
+            </label>
+            <div class="oa-col-stack">
+              <label class="field">
+                <span class="label">PAN No.</span>
+                <input type="text" id="oa-pan" value="AVAPK3287C" />
+              </label>
+              <label class="field">
+                <span class="label">Authorised Signatory</span>
+                <input type="text" id="oa-signatory" value="Nilesh Kothari" />
+              </label>
+              <label class="field">
+                <span class="label">Website</span>
+                <input type="text" id="oa-website" value="www.orangyads.com" />
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Invoice Meta ── -->
+      <div class="oa-card">
+        <div class="oa-card-head oa-card-head-static">Invoice Details</div>
+        <div class="oa-card-body">
+          <div class="oa-grid-2">
+            <label class="field">
+              <span class="label">Invoice Number</span>
+              <input type="text" id="oa-inv-no" placeholder="707" required />
+            </label>
+            <label class="field">
+              <span class="label">Date</span>
+              <input type="date" id="oa-date" required />
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Bill To ── -->
+      <div class="oa-card">
+        <div class="oa-card-head oa-card-head-static">Bill To</div>
+        <div class="oa-card-body">
+          <label class="field">
+            <span class="label">Company / Name</span>
+            <input type="text" id="oa-to-name" placeholder="Shree Venkatesh Buildcon Pvt Ltd" required />
+          </label>
+          <label class="field">
+            <span class="label">Project <span class="oa-optional">(optional)</span></span>
+            <input type="text" id="oa-to-project" placeholder="Venkatesh Erandwane Central" />
+          </label>
+          <label class="field">
+            <span class="label">City</span>
+            <input type="text" id="oa-to-city" placeholder="Pune" />
+          </label>
+        </div>
+      </div>
+
+      <!-- ── Particulars ── -->
+      <div class="oa-card">
+        <div class="oa-card-head oa-card-head-static">Particulars</div>
+        <div class="oa-card-body">
+          <div id="oa-items-container"></div>
+          <button type="button" id="oa-add-item" class="btn btn-secondary btn-full oa-add-btn">
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            Add Item
+          </button>
+        </div>
+      </div>
+
+      <!-- ── Total ── -->
+      <div class="oa-total-box">
+        <div class="oa-total-row">
+          <span class="oa-total-label">Total</span>
+          <strong id="oa-total-disp" class="oa-total-amt">Rs. 0/-</strong>
+        </div>
+        <p id="oa-words-disp" class="oa-words"></p>
+      </div>
+
+      <!-- ── Terms ── -->
+      <div class="oa-card">
+        <div class="oa-card-head oa-card-head-static">Terms &amp; Conditions</div>
+        <div class="oa-card-body">
+          <label class="field">
+            <textarea id="oa-terms" rows="4">1) Payment should be done in the Name of "Orangy Ads"
+2) 100% Payment in advance.
+3) For Month of November, December 2025 and January 2026.</textarea>
+          </label>
+        </div>
+      </div>
+
+      <!-- ── Actions ── -->
+      <div class="actions">
+        <button type="button" id="oa-reset" class="btn btn-ghost-danger">Reset</button>
+        <div class="actions-right">
+          <button type="button" id="oa-preview-btn" class="btn btn-secondary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            Preview
+          </button>
+          <button type="submit" class="btn oa-btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download PDF
+          </button>
+        </div>
+      </div>
+
+    </form>
+
+    <!-- ── Preview Dialog ── -->
+    <dialog id="oa-dialog" class="preview-dialog oa-dialog">
+      <div class="preview-inner">
+        <div class="preview-toolbar">
+          <span class="preview-toolbar-label">Invoice Preview</span>
+          <button type="button" id="oa-dialog-close" class="preview-close">&times;</button>
+        </div>
+        <div id="oa-preview-sheet" class="oa-preview-wrap"></div>
+      </div>
+    </dialog>
+
+  </div>
+
+  <template id="oa-item-tpl">
+    <div class="oa-item" data-oa-item>
+      <div class="oa-item-inner">
+        <span class="oa-item-num"></span>
+        <label class="field oa-item-desc-field">
+          <span class="label">Description</span>
+          <textarea class="oa-desc" rows="2" placeholder="SEO (Search Engine Optimization) for example.com" required></textarea>
+        </label>
+        <label class="field oa-item-amt-field">
+          <span class="label">Amount (Rs.)</span>
+          <input type="number" class="oa-amt" min="0" step="1" value="0" required />
+        </label>
+        <button type="button" class="btn btn-ghost btn-remove oa-item-del" data-oa-remove>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </template>
+
+</body>
+</html>
