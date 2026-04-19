@@ -216,63 +216,108 @@ function buildPreviewHtml() {
   const total = getItems().reduce(function(s, r) { return s + (parseFloat(r.querySelector('.oa-amt').value)||0); }, 0);
   const totalInt = Math.round(total);
 
-  const toLines = ['<strong>To,</strong>', escHtml(v.toName)];
-  if (v.toProject) toLines.push('Project - ' + escHtml(v.toProject));
-  if (v.toCity)    toLines.push(escHtml(v.toCity));
+  const toBlock = [
+    '<span class="oa-inv-to-name">' + escHtml(v.toName) + '</span>',
+  ];
+  if (v.toProject) toBlock.push('Project — ' + escHtml(v.toProject));
+  if (v.toCity)    toBlock.push(escHtml(v.toCity));
 
   const itemRows = getItems().map(function(r, i) {
     const desc = r.querySelector('.oa-desc').value;
     const amt  = parseFloat(r.querySelector('.oa-amt').value) || 0;
     return `<tr>
-      <td class="oa-td-particulars">${escHtml((i+1)+') '+desc)}</td>
+      <td class="oa-td-particulars">${escHtml((i+1) + ')  ' + desc)}</td>
       <td class="oa-td-rate">${escHtml(formatRs(amt))}</td>
     </tr>`;
   }).join('');
 
   return `
   <div class="oa-sheet">
-    <div class="oa-swoosh-bl"></div>
-    <div class="oa-swoosh-br"></div>
-    <div class="oa-sheet-inner">
-      <div class="oa-inv-header">
-        <img src="./orangyads-logo.png" class="oa-inv-logo" alt="OrangyAds" />
-        <div class="oa-inv-addr">${escHtml(v.address).replace(/\n/g,'<br>')}</div>
+
+    <!-- ▸ Split header: white logo left · orange info right -->
+    <div class="oa-inv-header-band">
+      <div class="oa-inv-header-logo-wrap">
+        <img src="./orgadsclearlogo.png" class="oa-inv-logo" alt="OrangyAds" />
       </div>
-      <hr class="oa-inv-divider" />
-      <div class="oa-inv-title">INVOICE</div>
-      <div class="oa-inv-date">Date - ${escHtml(formatDate(v.date))}</div>
-      <div class="oa-inv-to-row">
-        <div class="oa-inv-to">${toLines.join('<br>')}</div>
-        <div class="oa-inv-invno">Invoice no : &nbsp;${escHtml(v.invNo)}</div>
+      <div class="oa-inv-header-info-wrap">
+        <div class="oa-inv-brand-tag">Digital Marketing Solutions</div>
+        <div class="oa-inv-addr-top">${escHtml(v.address).replace(/\n/g,'<br>')}</div>
       </div>
+    </div>
+
+    <!-- ▸ Divider line below header -->
+    <div style="height:2px;background:linear-gradient(to right,#f47920 0%,#ffa040 50%,#f0f0f0 100%);margin:0 1.75rem;border-radius:2px;"></div>
+
+    <!-- ▸ Body -->
+    <div class="oa-sheet-body">
+
+      <!-- Title + invoice meta -->
+      <div class="oa-inv-title-row">
+        <div class="oa-inv-title">INV<span>OICE</span></div>
+        <div class="oa-inv-meta">
+          <div class="oa-inv-meta-no">#&thinsp;${escHtml(v.invNo)}</div>
+          <div>Date &nbsp;·&nbsp; ${escHtml(formatDate(v.date))}</div>
+        </div>
+      </div>
+
+      <!-- Bill to -->
+      <div class="oa-inv-to-section">
+        <div class="oa-inv-to-label">Bill To</div>
+        ${toBlock.join('<br>')}
+      </div>
+
+      <!-- Particulars table -->
       <table class="oa-inv-table">
         <thead>
-          <tr><th>Particulars</th><th>Rate</th></tr>
+          <tr>
+            <th style="text-align:left;padding-left:0.85rem">Particulars</th>
+            <th style="width:28%">Rate</th>
+          </tr>
         </thead>
         <tbody>${itemRows}</tbody>
         <tfoot>
           <tr class="oa-tr-total">
-            <td style="text-align:right"><strong>Total</strong></td>
-            <td class="oa-td-rate"><strong>${escHtml(formatRsTotal(totalInt))}</strong></td>
+            <td class="oa-total-label-cell">Total Amount</td>
+            <td class="oa-td-rate">${escHtml(formatRsTotal(totalInt))}</td>
           </tr>
           <tr class="oa-tr-words">
-            <td colspan="2"><strong>Amount (in words) :</strong> ${escHtml(indianWords(totalInt))}</td>
+            <td colspan="2"><em>In words :</em>&ensp;${escHtml(indianWords(totalInt))}</td>
           </tr>
         </tfoot>
       </table>
-      <div class="oa-inv-terms">
-        <span class="oa-inv-terms-head">Terms &amp; Conditions -</span>${escHtml(v.terms)}
+
+      <!-- Terms + PAN -->
+      <div class="oa-inv-bottom-row">
+        <div class="oa-inv-terms">
+          <span class="oa-inv-terms-head">Terms &amp; Conditions</span>${escHtml(v.terms)}
+        </div>
+        <div class="oa-inv-pan-box">
+          <span class="oa-inv-pan-label">PAN No.</span>
+          ${escHtml(v.pan)}
+        </div>
       </div>
-      <div class="oa-inv-pan">PAN NO:<br>${escHtml(v.pan)}</div>
+
+      <!-- Footer -->
       <div class="oa-inv-footer">
+        <div class="oa-inv-footer-tagline">OrangyAds &nbsp;·&nbsp; Digital Marketing Solutions</div>
         <div>
           <div class="oa-inv-signatory">
-            <strong>Authorised Signatory :</strong><br>${escHtml(v.signatory)}
+            <strong>Authorised Signatory</strong><br>${escHtml(v.signatory)}
           </div>
           <div class="oa-inv-website">${escHtml(v.website)}</div>
         </div>
       </div>
+
     </div>
+
+    <!-- ▸ Bottom wave accent -->
+    <svg class="oa-inv-bottom-wave" viewBox="0 0 600 22" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" height="22" aria-hidden="true">
+      <path d="M0,22 C100,4 200,18 320,10 C440,2 520,16 600,8 L600,22 Z" fill="#f47920" opacity="0.18"/>
+      <path d="M0,22 C90,8 200,20 310,12 C420,4 510,18 600,10 L600,22 Z" fill="#f47920" opacity="0.35"/>
+      <path d="M0,22 C80,12 190,22 300,14 C410,6 500,20 600,12 L600,22 Z" fill="#f47920" opacity="0.65"/>
+      <path d="M0,22 C70,16 180,22 290,16 C400,10 490,22 600,16 L600,22 Z" fill="#f47920"/>
+    </svg>
+
   </div>`;
 }
 
@@ -300,175 +345,232 @@ async function generatePDF() {
   const doc = new jsPDF({ unit: 'mm', format: 'a4' });
   const pageW = doc.internal.pageSize.getWidth();
   const pageH = doc.internal.pageSize.getHeight();
-  const margin = 15;
-  const orange = [244, 121, 32];
+  const mg    = 15;
+  const orange  = [244, 121, 32];
+  const dkOrange= [196, 68,  0];
+  const navy    = [26,  26,  46];
+  const white   = [255, 255, 255];
 
-  // ── Orange swoosh decorations ──
-  doc.setFillColor(...orange);
-  doc.ellipse(pageW + 8,  -12, 44, 58, 'F');   // top-right
-  doc.ellipse(-10, pageH + 10, 28, 36, 'F');   // bottom-left
-  doc.ellipse(pageW + 10, pageH + 10, 28, 36, 'F'); // bottom-right
+  // ── HEADER: no background — logo left, address right ──
+  const headerH = 28;
 
-  // ── Logo ──
+  // ── LOGO ──
   try {
-    const resp = await fetch('./orangyads-logo.png');
+    const resp = await fetch('./orgadsclearlogo.png');
     const blob = await resp.blob();
-    const logoDataUrl = await new Promise(function(resolve) {
-      const reader = new FileReader();
-      reader.onload = function(e) { resolve(e.target.result); };
-      reader.readAsDataURL(blob);
+    const logoDataUrl = await new Promise(function(res) {
+      const rd = new FileReader();
+      rd.onload = function(e) { res(e.target.result); };
+      rd.readAsDataURL(blob);
     });
-    doc.addImage(logoDataUrl, 'PNG', margin, 8, 46, 20);
+    doc.addImage(logoDataUrl, 'PNG', mg, 5, 44, 18);
   } catch(e) {}
 
-  // ── Address top-right ──
-  const addrLines = v.address.split('\n');
+  // ── BRAND TAG ──
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(6);
+  doc.setTextColor(...orange);
+  doc.text('DIGITAL MARKETING SOLUTIONS', pageW - mg, 9, { align: 'right' });
+
+  // ── ADDRESS ──
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(9.5);
-  doc.setTextColor(50, 50, 50);
-  let ay = 13;
-  addrLines.forEach(function(line) {
-    doc.text(line.trim(), pageW - margin, ay, { align: 'right' });
-    ay += 5;
+  doc.setFontSize(8);
+  doc.setTextColor(80, 80, 80);
+  let ay = 14;
+  v.address.split('\n').forEach(function(line) {
+    doc.text(line.trim(), pageW - mg, ay, { align: 'right' });
+    ay += 4;
   });
 
-  // ── Divider ──
-  let y = 32;
-  doc.setDrawColor(120, 120, 120);
-  doc.setLineWidth(0.5);
-  doc.line(margin, y, pageW - margin, y);
-  y += 8;
+  // ── Gradient divider line ──
+  doc.setDrawColor(...orange);
+  doc.setLineWidth(0.7);
+  doc.line(mg, headerH, pageW * 0.55, headerH);
+  doc.setDrawColor(220, 220, 220);
+  doc.setLineWidth(0.4);
+  doc.line(pageW * 0.55, headerH, pageW - mg, headerH);
 
-  // ── INVOICE title ──
+  let y = headerH + 10;
+
+  // ── INVOICE TITLE + NUMBER (two-tone: INV dark · OICE orange) ──
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(18);
-  doc.setTextColor(20, 20, 20);
-  doc.text('INVOICE', pageW / 2, y, { align: 'center' });
-  y += 8;
+  doc.setFontSize(22);
+  doc.setTextColor(...navy);
+  doc.text('INV', mg, y);
+  const invW = doc.getTextWidth('INV');
+  doc.setTextColor(...orange);
+  doc.text('OICE', mg + invW, y);
 
-  // ── Date ──
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(10);
-  doc.setTextColor(50, 50, 50);
-  doc.text('Date - ' + formatDate(v.date), pageW - margin, y, { align: 'right' });
-  y += 7;
-
-  // ── To section ──
-  const toLines = ['To,', v.toName];
-  if (v.toProject) toLines.push('Project - ' + v.toProject);
-  if (v.toCity)    toLines.push(v.toCity);
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(10);
-  doc.setTextColor(20, 20, 20);
-  toLines.forEach(function(line, i) {
-    if (i === 1) doc.setFont('helvetica', 'bold');
-    else doc.setFont('helvetica', 'normal');
-    doc.text(line, margin, y);
-    y += 5;
-  });
-
-  // ── Invoice no (right-aligned, same area as To) ──
-  doc.setFont('helvetica', 'bold');
+  // Invoice # (right)
   doc.setFontSize(11);
-  doc.setTextColor(20, 20, 20);
-  const invNoY = y - (toLines.length * 5) + 5;
-  doc.text('Invoice no :  ' + v.invNo, pageW - margin, invNoY + (toLines.length * 5) - 8, { align: 'right' });
+  doc.setTextColor(...orange);
+  doc.text('# ' + v.invNo, pageW - mg, y - 3, { align: 'right' });
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(100, 100, 120);
+  doc.text('Date  \u00B7  ' + formatDate(v.date), pageW - mg, y + 3, { align: 'right' });
+
   y += 4;
 
-  // ── Items table ──
-  const col1W = 120;
-  const col2W = 180 - col1W;
-  const bodyRows = items.map(function(it, i) {
-    return [{ content: (i+1)+') '+it.desc, styles: { halign: 'center', valign: 'middle' } },
-            { content: formatRs(it.amt), styles: { halign: 'center', valign: 'middle' } }];
-  });
+  // ── Thin orange rule ──
+  doc.setDrawColor(...orange);
+  doc.setLineWidth(0.6);
+  doc.line(mg, y, pageW - mg, y);
+  y += 7;
 
-  const footRows = [
-    [
-      { content: 'Total', styles: { halign: 'right', fontStyle: 'bold', fontSize: 11 } },
-      { content: formatRsTotal(total), styles: { halign: 'center', fontStyle: 'bold', fontSize: 11 } },
-    ],
-    [
-      { content: 'Amount (in words) : ' + indianWords(total), colSpan: 2, styles: { halign: 'center', fontSize: 9, fontStyle: 'normal' } },
-    ],
-  ];
+  // ── BILL TO box ──
+  const billToLines = [v.toName];
+  if (v.toProject) billToLines.push('Project — ' + v.toProject);
+  if (v.toCity)    billToLines.push(v.toCity);
+  const billBoxH = 5 + billToLines.length * 4.8 + 4;
+
+  doc.setFillColor(255, 249, 243);
+  doc.setDrawColor(...orange);
+  doc.setLineWidth(0);
+  doc.roundedRect(mg, y, pageW - 2 * mg, billBoxH, 2, 2, 'F');
+  doc.setFillColor(...orange);
+  doc.roundedRect(mg, y, 2, billBoxH, 1, 1, 'F');
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(6.5);
+  doc.setTextColor(...orange);
+  doc.text('BILL TO', mg + 6, y + 4);
+  let by = y + 9;
+  billToLines.forEach(function(line, i) {
+    doc.setFont('helvetica', i === 0 ? 'bold' : 'normal');
+    doc.setFontSize(i === 0 ? 10 : 8.5);
+    doc.setTextColor(i === 0 ? 20 : 80, i === 0 ? 20 : 80, i === 0 ? 20 : 80);
+    doc.text(line, mg + 6, by);
+    by += 4.8;
+  });
+  y += billBoxH + 7;
+
+  // ── ITEMS TABLE ──
+  const col1W = 130, col2W = pageW - 2 * mg - col1W;
+  const bodyRows = items.map(function(it, i) {
+    return [
+      { content: (i + 1) + ')  ' + it.desc, styles: { halign: 'left', valign: 'middle' } },
+      { content: formatRs(it.amt), styles: { halign: 'center', valign: 'middle', fontStyle: 'bold' } },
+    ];
+  });
 
   autoTable(doc, {
     startY: y,
     head: [[
-      { content: 'Particulars', styles: { halign: 'center' } },
-      { content: 'Rate', styles: { halign: 'center' } },
+      { content: 'Particulars', styles: { halign: 'left' } },
+      { content: 'Rate',        styles: { halign: 'center' } },
     ]],
     body: bodyRows,
-    foot: footRows,
+    foot: [
+      [
+        { content: 'TOTAL AMOUNT', styles: { halign: 'right', fontStyle: 'bold', fontSize: 9, fillColor: white, textColor: navy, lineColor: [230, 210, 195], lineWidth: 0.25 } },
+        { content: formatRsTotal(total), styles: { halign: 'center', fontStyle: 'bold', fontSize: 13, fillColor: navy, textColor: [255, 169, 77], lineWidth: 0 } },
+      ],
+      [
+        { content: 'In words :  ' + indianWords(total), colSpan: 2, styles: { halign: 'center', fontSize: 8, fontStyle: 'italic', fillColor: [253, 246, 239], textColor: [100, 100, 120], lineColor: [230, 210, 195], lineWidth: 0.25 } },
+      ],
+    ],
     theme: 'grid',
     headStyles: {
-      fillColor: [255, 255, 255],
-      textColor: [0, 0, 0],
+      fillColor: orange,
+      textColor: white,
       fontStyle: 'bold',
-      fontSize: 12,
-      lineColor: [80, 80, 80],
-      lineWidth: 0.5,
-      minCellHeight: 8,
+      fontSize: 10.5,
+      lineWidth: 0,
+      minCellHeight: 9,
     },
     bodyStyles: {
-      fillColor: [255, 255, 255],
-      textColor: [30, 30, 30],
-      fontSize: 10,
-      lineColor: [100, 100, 100],
-      lineWidth: 0.3,
-      minCellHeight: 18,
-    },
-    footStyles: {
-      fillColor: [255, 255, 255],
+      fillColor: white,
       textColor: [30, 30, 30],
       fontSize: 9.5,
-      lineColor: [100, 100, 100],
-      lineWidth: 0.3,
+      lineColor: [230, 210, 195],
+      lineWidth: 0.25,
+      minCellHeight: 16,
+    },
+    alternateRowStyles: { fillColor: [253, 246, 239] },
+    footStyles: {
+      fillColor: white,
+      textColor: navy,
+      fontSize: 9,
+      lineWidth: 0,
+      minCellHeight: 9,
     },
     columnStyles: {
       0: { cellWidth: col1W },
       1: { cellWidth: col2W },
     },
-    margin: { left: margin, right: margin },
+    margin: { left: mg, right: mg },
   });
 
-  y = doc.lastAutoTable.finalY + 7;
+  y = doc.lastAutoTable.finalY + 8;
 
-  // ── Terms & Conditions ──
+  // ── TERMS (left) + PAN box (right) ──
+  const termsText = doc.splitTextToSize(v.terms, pageW - 2 * mg - 45);
+  const panBoxW = 40, panBoxH = 16;
+  const panBoxX = pageW - mg - panBoxW;
+
+  doc.setFillColor(247, 247, 249);
+  doc.setDrawColor(220, 220, 228);
+  doc.setLineWidth(0.3);
+  doc.roundedRect(panBoxX, y, panBoxW, panBoxH, 3, 3, 'FD');
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(9.5);
-  doc.setTextColor(20, 20, 20);
-  doc.text('Terms & Conditions -', margin, y);
-  y += 5;
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(9);
-  const termsLines = doc.splitTextToSize(v.terms, pageW - 2 * margin);
-  doc.text(termsLines, margin, y);
-  y += termsLines.length * 4.5 + 6;
-
-  // ── PAN ──
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(9.5);
-  doc.setTextColor(20, 20, 20);
-  doc.text('PAN NO:', margin + 4, y);
-  y += 5;
-  doc.text(v.pan, margin + 4, y);
-  y += 8;
-
-  // ── Authorised Signatory ──
-  const sigY = Math.max(y + 10, pageH - 38);
+  doc.setFontSize(6.5);
+  doc.setTextColor(170, 170, 180);
+  doc.text('PAN NO.', panBoxX + panBoxW / 2, y + 5, { align: 'center' });
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(10);
-  doc.text('Authorised Signatory :', pageW - margin, sigY, { align: 'right' });
-  doc.setFont('helvetica', 'normal');
-  doc.text(v.signatory, pageW - margin, sigY + 6, { align: 'right' });
+  doc.setTextColor(...navy);
+  doc.text(v.pan, panBoxX + panBoxW / 2, y + 12, { align: 'center' });
 
-  // ── Website ──
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(7.5);
+  doc.setTextColor(...orange);
+  doc.text('TERMS & CONDITIONS', mg, y + 4);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(7.5);
+  doc.setTextColor(80, 80, 90);
+  doc.text(termsText, mg, y + 9);
+
+  y = Math.max(y + panBoxH + 6, y + termsText.length * 3.8 + 14);
+
+  // ── FOOTER ──
+  const footY = Math.max(y, pageH - 28);
+
+  doc.setDrawColor(240, 228, 216);
+  doc.setLineWidth(0.4);
+  doc.line(mg, footY, pageW - mg, footY);
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(6.5);
+  doc.setTextColor(200, 200, 210);
+  doc.text('ORANGYADS  ·  DIGITAL MARKETING SOLUTIONS', mg, footY + 6);
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(9.5);
+  doc.setTextColor(...navy);
+  doc.text('Authorised Signatory', pageW - mg, footY + 5, { align: 'right' });
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(9);
-  doc.setTextColor(80, 80, 80);
-  doc.text(v.website, pageW - margin, sigY + 14, { align: 'right' });
+  doc.setTextColor(60, 60, 60);
+  doc.text(v.signatory, pageW - mg, footY + 11, { align: 'right' });
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(8);
+  doc.setTextColor(...orange);
+  doc.text(v.website, pageW - mg, footY + 17, { align: 'right' });
+
+  // ── Bottom wave accent bars ──
+  const bwY = pageH - 4;
+  doc.setFillColor(...orange);
+  doc.setDrawColor(...orange);
+  doc.lines(
+    [
+      [pageW * 0.22, -3.5, pageW * 0.28, -3.5, pageW * 0.5, -1.5],
+      [pageW * 0.22,  1.5, pageW * 0.28,  3.5, pageW * 0.5,  1.5],
+      [0, 4], [-pageW, 0],
+    ],
+    0, bwY, [1,1], 'F', true
+  );
 
   const safe = (v.invNo || 'invoice').replace(/[^\w\-]+/g, '_');
   doc.save('orangyads-invoice-' + safe + '.pdf');

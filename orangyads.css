@@ -247,212 +247,288 @@
   margin: 1rem;
 }
 
-/* ── Invoice sheet (preview) ── */
+/* ═══════════════════════════════════════════
+   OrangyAds Invoice — Modern 2025 Design
+   ═══════════════════════════════════════════ */
+
+/* ── Invoice sheet wrapper ── */
 .oa-sheet {
   background: #fff;
-  color: #111;
+  color: #1a1a2e;
   font-family: 'Arial', sans-serif;
   font-size: 11px;
   line-height: 1.45;
   padding: 0;
   position: relative;
   overflow: hidden;
-  border-radius: 4px;
+  border-radius: 8px;
+  box-shadow: 0 8px 40px rgba(244,121,32,0.18);
 }
 
-/* Orange swoosh decorations */
-.oa-sheet::before {
-  content: '';
-  position: absolute;
-  top: -30px;
-  right: -30px;
-  width: 110px;
-  height: 140px;
-  background: #f47920;
-  border-radius: 50%;
-  pointer-events: none;
-}
-
-.oa-swoosh-bl,
-.oa-swoosh-br {
-  position: absolute;
-  bottom: -20px;
-  width: 70px;
-  height: 88px;
-  background: #f47920;
-  border-radius: 50%;
-  pointer-events: none;
-}
-.oa-swoosh-bl { left: -25px; }
-.oa-swoosh-br { right: -25px; }
-
-.oa-sheet-inner {
-  padding: 1.5rem 1.75rem 1.5rem;
-  position: relative;
-  z-index: 1;
-}
-
-/* Header */
-.oa-inv-header {
+/* ── Header band: no background, just logo + address ── */
+.oa-inv-header-band {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 0.75rem;
+  background: transparent;
+  padding: 1.1rem 1.75rem 0.8rem;
   gap: 1rem;
 }
 
-.oa-inv-logo {
-  height: 56px;
-  object-fit: contain;
-}
-
-.oa-inv-addr {
-  text-align: right;
-  font-size: 10.5px;
-  color: #333;
-  line-height: 1.55;
-}
-
-.oa-inv-divider {
-  border: none;
-  border-top: 1.5px solid #888;
-  margin: 0.65rem 0;
-}
-
-.oa-inv-title {
-  text-align: center;
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  margin: 0.6rem 0 0.35rem;
-  color: #111;
-}
-
-.oa-inv-date {
-  text-align: right;
-  font-size: 10.5px;
-  margin: 0 0 0.6rem;
-  color: #333;
-}
-
-.oa-inv-to-row {
+.oa-inv-header-logo-wrap {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 0.6rem;
-  gap: 1rem;
-}
-
-.oa-inv-to {
-  font-size: 10.5px;
-  line-height: 1.6;
-  color: #111;
-}
-
-.oa-inv-invno {
-  font-size: 11px;
-  font-weight: 700;
-  text-align: right;
-  white-space: nowrap;
+  align-items: center;
   flex-shrink: 0;
 }
 
-/* Table */
+.oa-inv-logo { height: 52px; object-fit: contain; }
+
+.oa-inv-header-info-wrap {
+  text-align: right;
+}
+
+.oa-inv-brand-tag {
+  font-size: 7.5px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #f47920;
+  margin-bottom: 0.25rem;
+}
+
+.oa-inv-addr-top {
+  font-size: 9px;
+  color: #555;
+  line-height: 1.7;
+  text-align: right;
+}
+
+/* ── Wave SVG transition ── */
+.oa-inv-wave { display: block; width: 100%; margin-top: -1px; }
+
+/* ── Sheet body ── */
+.oa-sheet-body { padding: 0.6rem 1.75rem 0.85rem; }
+
+/* ── Title + meta row ── */
+.oa-inv-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #f0e4d8;
+}
+
+.oa-inv-title {
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  color: #1a1a1a;
+  line-height: 1;
+}
+.oa-inv-title span { color: #f47920; }
+
+.oa-inv-meta {
+  text-align: right;
+  font-size: 9.5px;
+  line-height: 1.8;
+  color: #555;
+}
+.oa-inv-meta-no {
+  font-size: 13px;
+  font-weight: 800;
+  color: #f47920;
+  letter-spacing: 0.04em;
+}
+
+/* ── Bill-to section ── */
+.oa-inv-to-section {
+  background: linear-gradient(to right, #fff8f3, #fff);
+  border-left: 3.5px solid #f47920;
+  padding: 0.5rem 0.85rem;
+  border-radius: 0 6px 6px 0;
+  margin-bottom: 0.85rem;
+  font-size: 10px;
+  line-height: 1.7;
+  color: #222;
+}
+.oa-inv-to-label {
+  font-size: 7.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #f47920;
+  margin-bottom: 0.15rem;
+}
+.oa-inv-to-name {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #111;
+}
+
+/* ── Table ── */
 .oa-inv-table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 0.5rem;
-}
-
-.oa-inv-table th,
-.oa-inv-table td {
-  border: 1px solid #555;
-  padding: 0.45rem 0.65rem;
-  vertical-align: middle;
+  margin-bottom: 0.4rem;
+  border-radius: 6px;
+  overflow: hidden;
 }
 
 .oa-inv-table thead th {
-  font-size: 12px;
+  background: linear-gradient(135deg, #f47920 0%, #d4610e 100%);
+  color: #fff;
+  font-size: 10.5px;
   font-weight: 700;
   text-align: center;
+  padding: 0.5rem 0.75rem;
+  letter-spacing: 0.05em;
+  border: none;
+}
+
+.oa-inv-table tbody td {
+  border: 1px solid #eddecf;
+  padding: 0.5rem 0.75rem;
+  vertical-align: middle;
   background: #fff;
 }
 
+.oa-inv-table tbody tr:nth-child(even) td { background: #fdf6ef; }
+
 .oa-inv-table .oa-td-particulars {
-  text-align: center;
-  font-size: 10.5px;
-  min-height: 60px;
-  vertical-align: middle;
+  text-align: left;
+  font-size: 10px;
   white-space: pre-wrap;
+  color: #222;
 }
 
 .oa-inv-table .oa-td-rate {
   text-align: center;
   font-size: 10.5px;
   white-space: nowrap;
+  font-weight: 600;
+  color: #333;
 }
 
-.oa-inv-table tfoot td {
-  font-size: 10.5px;
-}
-
-.oa-inv-table .oa-tr-total td {
+/* Total rows */
+.oa-inv-table tfoot .oa-tr-total td {
+  background: #1a1a2e;
+  color: #fff;
   font-weight: 700;
-  text-align: right;
   font-size: 11px;
+  border: none;
+  padding: 0.6rem 0.75rem;
 }
 
-.oa-inv-table .oa-tr-total .oa-td-rate {
+.oa-inv-table tfoot .oa-tr-total .oa-total-label-cell {
+  background: #fff;
+  color: #1a1a2e;
+  text-align: right;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 9.5px;
+  border: 1px solid #eddecf;
+}
+
+.oa-inv-table tfoot .oa-tr-total .oa-td-rate {
+  color: #ffa94d;
+  font-size: 13px;
+  font-weight: 800;
   text-align: center;
 }
 
-.oa-inv-table .oa-tr-words td {
+.oa-inv-table tfoot .oa-tr-words td {
   text-align: center;
-  font-size: 10px;
+  font-size: 9px;
+  color: #666;
+  font-style: italic;
+  background: #fdf6ef;
+  border: 1px solid #eddecf;
+  padding: 0.35rem 0.75rem;
 }
 
-/* T&C */
+/* ── Bottom section ── */
+.oa-inv-bottom-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 0.7rem;
+  gap: 1rem;
+}
+
 .oa-inv-terms {
-  font-size: 10px;
-  margin: 0.75rem 0 0.5rem;
-  line-height: 1.6;
-  color: #222;
+  font-size: 8.5px;
+  line-height: 1.7;
+  color: #555;
   white-space: pre-wrap;
+  flex: 1;
 }
-
 .oa-inv-terms-head {
   font-weight: 700;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #f47920;
   display: block;
   margin-bottom: 0.2rem;
 }
 
-/* PAN */
-.oa-inv-pan {
-  font-size: 10px;
-  color: #222;
-  margin: 0.75rem 0;
+.oa-inv-pan-box {
+  background: #f7f7f9;
+  border: 1px solid #e4e4ea;
+  border-radius: 7px;
+  padding: 0.5rem 0.85rem;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #1a1a2e;
   line-height: 1.6;
+  white-space: nowrap;
+  text-align: center;
+}
+.oa-inv-pan-label {
+  font-weight: 700;
+  font-size: 7px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #aaa;
+  display: block;
+  margin-bottom: 0.1rem;
 }
 
-/* Footer row */
+/* ── Footer ── */
 .oa-inv-footer {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: flex-end;
-  margin-top: 1rem;
-  padding-bottom: 2.5rem;
+  margin-top: 0.85rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid #f0e4d8;
+}
+
+.oa-inv-footer-tagline {
+  font-size: 7.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #ccc;
+  font-weight: 600;
 }
 
 .oa-inv-signatory {
   text-align: right;
-  font-size: 10.5px;
-  line-height: 1.55;
-  color: #111;
+  font-size: 10px;
+  line-height: 1.6;
+  color: #333;
 }
+.oa-inv-signatory strong { color: #111; font-size: 10.5px; }
 
 .oa-inv-website {
   text-align: right;
-  font-size: 9.5px;
-  color: #555;
-  margin-top: 0.75rem;
+  font-size: 9px;
+  color: #f47920;
+  font-weight: 700;
+  margin-top: 0.15rem;
+  letter-spacing: 0.02em;
 }
+
+/* ── Bottom wave accent ── */
+.oa-inv-bottom-wave { display: block; width: 100%; margin-top: 0.5rem; }
