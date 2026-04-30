@@ -7,6 +7,7 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, 'index.html'),
         orangyads: resolve(__dirname, 'orangyads.html'),
+        sachin: resolve(__dirname, 'sachin.html'),
       }
     }
   }
