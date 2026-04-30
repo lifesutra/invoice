@@ -1,0 +1,387 @@
+/* Sachin Vegitable Store — brand overrides */
+[data-theme="light"] {
+  --sv: #2e7d32;
+  --sv-dim: #1b5e20;
+  --sv-bg: rgba(46, 125, 50, 0.08);
+}
+
+/* ── Topbar ── */
+.sv-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 0;
+  margin-bottom: 0.25rem;
+}
+
+.sv-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-2);
+  transition: color 0.15s, background 0.15s;
+}
+.sv-back:hover { color: var(--sv); background: var(--sv-bg); border-color: var(--sv); }
+
+.sv-topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--sv);
+}
+.sv-topbar-icon { font-size: 1.1rem; }
+
+.sv-hero {
+  text-align: center;
+  margin-bottom: 1.25rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* ── Form ── */
+.sv-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ── Card ── */
+.sv-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.sv-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1.15rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sv);
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-bottom: 1px solid transparent;
+  transition: background 0.15s;
+}
+.sv-card-head:hover { background: var(--sv-bg); }
+.sv-card-head-static {
+  cursor: default;
+  border-bottom: 1px solid var(--border);
+}
+.sv-card-head-static:hover { background: none; }
+.sv-card-head[aria-expanded="true"] { border-bottom: 1px solid var(--border); }
+
+.sv-chevron { transition: transform 0.2s; flex-shrink: 0; color: var(--text-muted); }
+.sv-card-head[aria-expanded="true"] .sv-chevron { transform: rotate(180deg); }
+
+.sv-card-body { padding: 1rem 1.15rem 1.1rem; }
+
+.sv-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem 1.25rem;
+}
+@media (max-width: 560px) { .sv-grid-2 { grid-template-columns: 1fr; } }
+
+/* Input focus accent */
+.sv-app input:focus,
+.sv-app textarea:focus,
+.sv-app select:focus {
+  outline-color: var(--sv);
+  border-color: var(--sv-dim);
+}
+
+/* ── Item rows ── */
+.sv-item {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-2);
+  padding: 0.75rem;
+  margin-bottom: 0.6rem;
+  transition: border-color 0.15s;
+}
+.sv-item:focus-within { border-color: var(--sv); }
+
+.sv-item-top {
+  display: grid;
+  grid-template-columns: 1.6rem 1fr auto;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+.sv-item-top .field { margin-bottom: 0; }
+
+.sv-item-num {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--sv);
+  text-align: right;
+}
+
+.sv-item-del { color: var(--danger); }
+
+.sv-item-bottom {
+  display: grid;
+  grid-template-columns: 4rem 5rem 1fr 1fr;
+  gap: 0.5rem;
+  padding-left: 2.1rem;
+}
+.sv-item-bottom .field { margin-bottom: 0; }
+
+@media (max-width: 520px) {
+  .sv-item-bottom {
+    grid-template-columns: 1fr 1fr;
+    padding-left: 0;
+  }
+}
+@media (max-width: 360px) {
+  .sv-item-bottom { grid-template-columns: 1fr; }
+}
+
+.sv-add-btn {
+  margin-top: 0.25rem;
+  color: var(--sv);
+  border-color: var(--sv);
+}
+.sv-add-btn:hover { background: var(--sv-bg); }
+
+/* ── Total box ── */
+.sv-total-box {
+  background: var(--surface);
+  border: 1px solid var(--sv);
+  border-radius: var(--radius);
+  padding: 0.9rem 1.15rem;
+  box-shadow: 0 2px 12px rgba(46,125,50,0.1);
+}
+.sv-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.sv-total-label { font-size: 1rem; font-weight: 600; color: var(--text); }
+.sv-total-amt   { font-size: 1.25rem; color: var(--sv); }
+.sv-words {
+  margin: 0.45rem 0 0;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* ── Primary button ── */
+.sv-btn-primary {
+  font: inherit;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  padding: 0.7rem 1.25rem;
+  min-height: 44px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  white-space: nowrap;
+  background: linear-gradient(155deg, #2e7d32 0%, #1b5e20 100%);
+  color: #fff;
+  box-shadow: 0 2px 12px rgba(46,125,50,0.3);
+  transition: opacity 0.15s, transform 0.1s;
+}
+.sv-btn-primary:hover  { opacity: 0.9; }
+.sv-btn-primary:active { transform: scale(0.98); }
+
+/* ── Preview dialog ── */
+.sv-dialog {
+  width: min(100vw - 1rem, 700px);
+  max-height: 92dvh;
+}
+@media (min-width: 768px) { .sv-dialog { width: min(100vw - 3rem, 760px); } }
+
+.sv-preview-wrap { margin: 1rem; }
+
+/* ═══════════════════════════════════════
+   Sachin Vegitable Store — Invoice Sheet
+   ═══════════════════════════════════════ */
+
+.sv-sheet {
+  background: #fff;
+  color: #1a1a1a;
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  line-height: 1.5;
+  border-radius: 8px;
+  box-shadow: 0 8px 40px rgba(46,125,50,0.15);
+  overflow: hidden;
+}
+
+/* Header */
+.sv-sheet-header {
+  text-align: center;
+  padding: 1.25rem 1.5rem 0.9rem;
+  border-bottom: 2.5px solid #2e7d32;
+}
+
+.sv-sheet-inv-title {
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  color: #111;
+  margin-bottom: 0.3rem;
+}
+
+.sv-sheet-store-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #2e7d32;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.2rem;
+}
+
+.sv-sheet-store-addr {
+  font-size: 9.5px;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* Meta row (bill-to + invoice info) */
+.sv-sheet-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0.65rem 1.5rem;
+  background: #f1f8e9;
+  border-bottom: 1px solid #c8e6c9;
+  gap: 1rem;
+}
+
+.sv-sheet-to { font-size: 10px; color: #222; flex: 1; }
+.sv-sheet-to-label {
+  font-size: 7.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #2e7d32;
+  margin-bottom: 0.15rem;
+}
+.sv-sheet-to-name { font-weight: 700; font-size: 10.5px; }
+
+.sv-sheet-inv-meta {
+  text-align: right;
+  font-size: 9.5px;
+  line-height: 1.9;
+  color: #444;
+  flex-shrink: 0;
+}
+.sv-sheet-inv-no {
+  font-size: 11px;
+  font-weight: 800;
+  color: #2e7d32;
+}
+
+/* Body */
+.sv-sheet-body { padding: 0.75rem 1.5rem 0.85rem; }
+
+/* Invoice table */
+.sv-inv-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 10px;
+}
+
+.sv-inv-table thead th {
+  background: #2e7d32;
+  color: #fff;
+  font-weight: 700;
+  font-size: 9.5px;
+  letter-spacing: 0.04em;
+  padding: 0.5rem 0.55rem;
+  border: none;
+}
+.sv-inv-table thead th:first-child { text-align: left; padding-left: 0.75rem; }
+.sv-inv-table thead th:last-child  { text-align: right; padding-right: 0.75rem; }
+.sv-inv-table thead th:not(:first-child):not(:last-child) { text-align: center; }
+
+.sv-inv-table tbody td {
+  border: 1px solid #c8e6c9;
+  padding: 0.4rem 0.55rem;
+  vertical-align: middle;
+  background: #fff;
+}
+.sv-inv-table tbody tr:nth-child(even) td { background: #f1f8e9; }
+
+.sv-td-desc   { text-align: left; padding-left: 0.75rem !important; color: #222; }
+.sv-td-qty    { text-align: center; color: #333; white-space: nowrap; }
+.sv-td-uprice { text-align: center; color: #333; white-space: nowrap; }
+.sv-td-amt    { text-align: right; font-weight: 600; color: #111; padding-right: 0.75rem !important; }
+
+/* Total rows */
+.sv-tr-total td {
+  border-top: 2px solid #2e7d32;
+  font-weight: 700;
+  padding: 0.5rem 0.55rem;
+}
+.sv-td-total-label {
+  text-align: right;
+  font-size: 10.5px;
+  color: #1b5e20;
+  background: #e8f5e9;
+  border: 1px solid #c8e6c9;
+  letter-spacing: 0.04em;
+  padding-right: 0.75rem !important;
+}
+.sv-td-total-amt {
+  text-align: right;
+  font-size: 13px;
+  font-weight: 800;
+  color: #1b5e20;
+  background: #e8f5e9;
+  border: 1px solid #c8e6c9;
+  padding-right: 0.75rem !important;
+}
+
+.sv-tr-words td {
+  text-align: left;
+  font-size: 9px;
+  font-style: italic;
+  color: #555;
+  background: #f9fbe7;
+  border: 1px solid #c8e6c9;
+  padding: 0.35rem 0.75rem;
+}
+
+/* Footer */
+.sv-sheet-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.7rem 1.5rem 1rem;
+  border-top: 1px solid #c8e6c9;
+  margin-top: 0.25rem;
+}
+.sv-sheet-footer-sig {
+  text-align: right;
+  font-size: 10px;
+  color: #555;
+  line-height: 1.8;
+}
+.sv-sheet-footer-sig strong {
+  display: block;
+  font-size: 11px;
+  color: #2e7d32;
+  margin-bottom: 0.15rem;
+}
+.sv-sheet-footer-sig span { display: block; }

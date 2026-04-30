@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Sachin Vegitable Store — Invoice</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./sachin.css" />
+  <script type="importmap">
+  { "imports": { "jspdf": "https://esm.sh/jspdf@2.5.2", "jspdf-autotable": "https://esm.sh/jspdf-autotable@3.8.4" } }
+  </script>
+</head>
+<body>
+  <div class="app sv-app">
+
+    <header class="sv-topbar">
+      <a href="./index.html" class="sv-back">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        All Templates
+      </a>
+      <div class="sv-topbar-brand">
+        <span class="sv-topbar-icon">&#127807;</span>
+        <span>Sachin Vegitable Store</span>
+      </div>
+    </header>
+
+    <div class="sv-hero">
+      <p>Store details &amp; all items are pre-filled. Adjust quantities, then download your PDF.</p>
+    </div>
+
+    <form id="sv-form" class="sv-form">
+
+      <!-- Store Details (collapsible) -->
+      <div class="sv-card">
+        <button type="button" class="sv-card-head" id="sv-store-toggle" aria-expanded="false">
+          <span>Store Details</span>
+          <svg class="sv-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="sv-card-body" id="sv-store-body" hidden>
+          <div class="sv-grid-2">
+            <label class="field">
+              <span class="label">Store Name</span>
+              <input type="text" id="sv-store-name" value="SACHIN VEGITABLE STORE" />
+            </label>
+            <label class="field">
+              <span class="label">Address</span>
+              <textarea id="sv-address" rows="2">Kanderaya Bhaji Mandal, Viveknagar, Akurdi, Pune - 411035</textarea>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Invoice Details -->
+      <div class="sv-card">
+        <div class="sv-card-head sv-card-head-static">Invoice Details</div>
+        <div class="sv-card-body">
+          <label class="field" style="margin-bottom:0.75rem">
+            <span class="label">Bill To (Name)</span>
+            <input type="text" id="sv-to-name" placeholder="Customer / company name" value="Isha Institute of Inner Sciences, Isha yoga centre, Velliangiri foothills, Ishana vihar post, coimbatore 641114" required />
+          </label>
+          <div class="sv-grid-2">
+            <label class="field">
+              <span class="label">Invoice #</span>
+              <input type="text" id="sv-inv-no" placeholder="5643" required />
+            </label>
+            <label class="field">
+              <span class="label">Date</span>
+              <input type="date" id="sv-date" required />
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Items -->
+      <div class="sv-card">
+        <div class="sv-card-head sv-card-head-static">Items</div>
+        <div class="sv-card-body">
+          <div id="sv-items-container"></div>
+          <button type="button" id="sv-add-item" class="btn btn-secondary btn-full sv-add-btn">
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            Add Item
+          </button>
+        </div>
+      </div>
+
+      <!-- Total -->
+      <div class="sv-total-box">
+        <div class="sv-total-row">
+          <span class="sv-total-label">Total</span>
+          <strong id="sv-total-disp" class="sv-total-amt">&#8377; 0.00</strong>
+        </div>
+        <p id="sv-words-disp" class="sv-words"></p>
+      </div>
+
+      <!-- Actions -->
+      <div class="actions">
+        <button type="button" id="sv-reset" class="btn btn-ghost-danger">Reset</button>
+        <div class="actions-right">
+          <button type="button" id="sv-preview-btn" class="btn btn-secondary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            Preview
+          </button>
+          <button type="submit" class="btn sv-btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download PDF
+          </button>
+        </div>
+      </div>
+
+    </form>
+
+    <!-- Preview Dialog -->
+    <dialog id="sv-dialog" class="preview-dialog sv-dialog">
+      <div class="preview-inner">
+        <div class="preview-toolbar">
+          <span class="preview-toolbar-label">Invoice Preview</span>
+          <button type="button" id="sv-dialog-close" class="preview-close">&times;</button>
+        </div>
+        <div id="sv-preview-sheet" class="sv-preview-wrap"></div>
+      </div>
+    </dialog>
+
+  </div>
+
+  <template id="sv-item-tpl">
+    <div class="sv-item" data-sv-item>
+      <div class="sv-item-top">
+        <span class="sv-item-num"></span>
+        <label class="field">
+          <span class="label">Description</span>
+          <input type="text" class="sv-desc" placeholder="e.g. Tomato" required />
+        </label>
+        <button type="button" class="btn btn-ghost btn-remove sv-item-del" data-sv-remove aria-label="Remove item">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="sv-item-bottom">
+        <label class="field">
+          <span class="label">Qty</span>
+          <input type="number" class="sv-qty" min="0" step="any" value="1" required />
+        </label>
+        <label class="field">
+          <span class="label">Unit</span>
+          <select class="sv-unit">
+            <option value="KGS">KGS</option>
+            <option value="NOS">NOS</option>
+            <option value="DOZ">DOZ</option>
+            <option value="Bunch">Bunch</option>
+            <option value="GMS">GMS</option>
+            <option value="QTL">QTL</option>
+            <option value="LTR">LTR</option>
+            <option value="MTR">MTR</option>
+          </select>
+        </label>
+        <label class="field">
+          <span class="label">Unit Price (&#8377;)</span>
+          <input type="number" class="sv-price" min="0" step="0.01" value="0" required />
+        </label>
+        <label class="field">
+          <span class="label">Amount (&#8377;)</span>
+          <input type="text" class="sv-amt" readonly tabindex="-1" />
+        </label>
+      </div>
+    </div>
+  </template>
+
+  <script type="module" src="./sachin.js"></script>
+</body>
+</html>
